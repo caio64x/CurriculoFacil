@@ -1,0 +1,72 @@
+﻿@model MontagemCurriculo.Models.FormacaoAcademica
+
+@{
+    ViewData["Title"] = "Atualizar formacao acadêmica";
+}
+
+
+<h4>Atualizar formacao academica</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="FormacaoAcademicaID" />
+            <div class="row">
+               
+                <div class="input-field col s12">
+                    <p>
+                        <label for="Instituicao">Tipo de curso</label>
+
+                    </p>
+                    <select asp-for="TipoCursoID" id="TipoCursoID" class="browser-default validate" asp-items="ViewBag.TipoCursoID"></select>
+                    <span asp-validation-for="TipoCursoID" class="red-text darken-3"></span>
+                    <span asp-validation-for="TipoCursoID" class="red-text darken-3"></span>
+                    <br />
+                    <a asp-action="Index" asp-controller="TipoCursos" class="btn btn-small blue darken-2">Atualizar tipos de cursos</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input asp-for="Instituicao" id="Instituicao" class="validate" />
+                    <label for="Instituicao">Instituição</label>
+                    <span asp-validation-for="Instituicao" class="red-text darken-3"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input asp-for="AnoInicio" id="AnoInicio" class="validate" />
+                    <label for="AnoInicio">Último ano</label>
+                    <span asp-validation-for="AnoInicio" class="red-text darken-3"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input asp-for="NomeCurso" id="NomeCurso" class="validate" />
+                    <label for="NomeCurso">Nome do curso</label>
+                    <span asp-validation-for="NomeCurso" class="red-text darken-3"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input asp-for="AnoFim" id="AnoFim" class="validate" />
+                    <label for="AnoFim">Ano de início</label>
+                    <span asp-validation-for="AnoFim" class="red-text darken-3"></span>
+                </div>
+            </div>
+
+            <input asp-for="CurriculoID" type="hidden" />
+
+
+            <div class="row">
+                <input type="submit" value="Atualizar" class="btn btn-small green darken-1" /> &nbsp;
+                <a asp-action="Details" asp-controller="Curriculos" asp-route-id="@Model.CurriculoID">Voltar</a>
+
+            </div>
+        </form>
+    </div>
+</div>

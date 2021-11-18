@@ -1,0 +1,74 @@
+﻿@model IEnumerable<MontagemCurriculo.Models.TipoCurso>
+
+@{
+    ViewData["Title"] = "Tipos de cursos cadastrados";
+}
+
+<h1>Tipos de cursos cadastrados</h1>
+
+
+<p>
+    <a asp-action="Create" class="btn-small green darken-4">Novo Tipo de curso</a>
+
+</p>
+<table class="table hover striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Tipo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tipo)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TipoCursoID" class="btn-floating btn-small blue darken-4"><i class="material-icons">edit</i></a> &nbsp;
+
+                    <a class="btn-floating btn-small red darken-4 model-trigger" onclick="ExibirModal(@item.TipoCursoID)"><i class="material-icons">delete_forever</i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div ID="modal1" class="modal">
+    <div class="modal-content">
+        <h4>Confirmar exclusão</h4>
+        <p>Deseja prosseguir com a exclusão?</p>
+    </div>
+    <div class="modal-footer">
+        <a class="modal-close btn green accent-4">Não</a>
+        <a class="modal-close btn red accent-4 btnConfirmar">Sim</a>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".modal").modal();
+        });
+
+        function ExibirModal(ID) {
+            $("#modal1").modal("open");
+
+            $(".btnConfirmar").on('click', function () {
+                $.ajax({
+                    method: "POST",
+                    url: "/TipoCursos/Delete",
+                    data: { ID: ID },
+                    success: function () {
+                        alert("Exclusão feita com sucesso");
+                        location.reload();
+                    }
+                });
+            })
+        }
+
+    </script>
+}

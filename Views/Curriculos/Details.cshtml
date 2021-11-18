@@ -1,0 +1,88 @@
+﻿@model MontagemCurriculo.Models.Curriculo
+
+
+@{
+    ViewData["Title"] = "Currículo " + Model.Nome;
+}
+
+<div class="col s2">
+    <h5>Currículo @Model.Nome</h5>&nbsp;
+    <a class="btn red darken-4" asp-controller="Curriculos" asp-route-id="@Model.CurriculoID" asp-action="VisualizarComoPDF">PDF</a>
+    <input type="hidden" asp-for="CurriculoID" />
+</div>
+
+<div>
+    <ul class="collection with-header">
+        <li class="collection-header">
+            <h5>
+                Objetivos <a asp-action="Create" asp-controller="Objetivos" asp-route-id="@Model.CurriculoID" class="btn-floating btn-small blue darken-4"><i class="material-icons">add</i></a>
+            </h5>
+        </li>
+        @await Component.InvokeAsync("Objetivos", Model.CurriculoID)
+    </ul>
+
+    <ul class="collection with-header">
+        <li class="collection-header">
+            <h5>
+                Formações Acadêmicas <a asp-action="Create" asp-controller="FormacoesAcademicas" asp-route-id="@Model.CurriculoID" class="btn-floating btn-small blue darken-4"><i class="material-icons">add</i></a>
+            </h5>
+        </li>
+        @await Component.InvokeAsync("FormacoesAcademicas", Model.CurriculoID)
+    </ul>
+
+    <ul class="collection with-header">
+        <li class="collection-header">
+            <h5>
+                Experiências Profissionais <a asp-action="Create" asp-controller="ExperienciasProfissionais" asp-route-id="@Model.CurriculoID" class="btn-floating btn-small blue darken-4"><i class="material-icons">add</i></a>
+            </h5>
+        </li>
+        @await Component.InvokeAsync("ExperienciasProfissionais", Model.CurriculoID)
+    </ul>
+
+    <ul class="collection with-header">
+        <li class="collection-header">
+            <h5>
+                Idiomas <a asp-action="Create" asp-controller="Idiomas" asp-route-id="@Model.CurriculoID" class="btn-floating btn-small blue darken-4"><i class="material-icons">add</i></a>
+            </h5>
+        </li>
+        @await Component.InvokeAsync("Idiomas", Model.CurriculoID)
+    </ul>
+
+</div>
+
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <h4>Confirmar exclusão</h4>
+        <p>Deseja prosseguir com a exclusão ?</p>
+    </div>
+    <div class="modal-footer">
+        <a class="modal-close btn green accent-4">Não</a>
+        <a class="modal-close btn red accent-4 btnConfirmar">Sim</a>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".modal").modal();
+        });
+
+        function ExibirModal(id, objeto) {
+            $("#modal1").modal("open");
+
+            var url = "/" + objeto + "/Delete"
+
+            $(".btnConfirmar").on('click', function () {
+                $.ajax({
+                    method: "POST",
+                    url: url,
+                    data: { id: id },
+                    success: function () {
+                        alert("Exclusão feita com sucesso ");
+                        location.reload();
+                    }
+                });
+            })
+        }
+    </script>
+}

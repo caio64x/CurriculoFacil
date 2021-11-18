@@ -1,0 +1,34 @@
+﻿@model MontagemCurriculo.Models.Objetivo
+
+@{
+    ViewData["Title"] = "Novo objetivo";
+}
+
+<div class="formulario">
+<h5>Novo objetivo</h5>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           
+            <div class="row">
+                <div class="input-field col s12">
+                    <input asp-for="Descrição" id="Descrição" class="validate" />
+                    <label for="Descrição">Descrição</label>
+                    <span asp-validation-for="Descrição" class="red-text darken-3"></span>
+                </div>
+            </div>
+            <input asp-for="CurriculoID" type="hidden" />
+
+            <div class="row">
+                <input type="submit" value="Salvar" class="btn btn-small green darken-1" /> &nbsp;
+                <a asp-action="Details" asp-controller="Curriculos" asp-route-id="@Model.CurriculoID">Voltar</a>
+
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+

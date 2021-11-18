@@ -1,0 +1,33 @@
+﻿@model MontagemCurriculo.Models.Curriculo
+
+@{ 
+    ViewData["Title"] = "Novo curriculo";
+}
+
+<div class="formulario">
+    <div>
+        <h4>Novo currículo</h4>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input asp-for="Nome" id="Nome" class="validate" />
+                        <label for="Nome">Nome do curriculo</label>
+                        <span asp-validation-for="Nome" class="red-text darken-3"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="submit" value="Salvar" class="btn btn-small green draken-1" /> &nbsp;
+                    <a asp-action="Index" class="btn btn-small grey lighten-1">Voltar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
