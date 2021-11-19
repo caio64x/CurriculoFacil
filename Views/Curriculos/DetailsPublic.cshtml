@@ -1,0 +1,54 @@
+﻿@model MontagemCurriculo.Models.Curriculo
+
+
+@{
+    ViewData["Title"] = " " + Model.Nome;
+}
+
+<div class="col s2">
+    <h5>Currículo @Model.Nome</h5>&nbsp;
+    <a class="btn red darken-4" asp-controller="Curriculos" asp-route-id="@Model.CurriculoID" asp-action="VisualizarComoPDF">PDF</a>
+    <input type="hidden" asp-for="CurriculoID" />
+</div>
+
+<div>
+    <ul class="collection with-header">
+        <li class="collection-header">
+            <h5>
+                Objetivos
+            </h5>
+        </li>
+        @await Component.InvokeAsync("ObjetivosPublic", Model.CurriculoID)
+        
+    </ul>
+
+    <ul class="collection with-header">
+        <li class="collection-header">
+            <h5>
+                Formações Acadêmicas
+            </h5>
+        </li>
+        @await Component.InvokeAsync("FormacoesAcademicasPublic", Model.CurriculoID)
+    </ul>
+
+    <ul class="collection with-header">
+        <li class="collection-header">
+            <h5>
+                Experiências Profissionais
+            </h5>
+        </li>
+
+        @await Component.InvokeAsync("ExperienciasProfissionaisPublic", Model.CurriculoID)
+    </ul>
+
+    <ul class="collection with-header">
+        <li class="collection-header">
+            <h5>
+                Idiomas
+            </h5>
+        </li>
+        @await Component.InvokeAsync("IdiomasPublic", Model.CurriculoID)
+      
+    </ul>
+
+</div>

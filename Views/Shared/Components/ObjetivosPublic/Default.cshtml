@@ -1,0 +1,14 @@
+﻿@model IEnumerable<MontagemCurriculo.Models.Objetivo>
+   
+@foreach (var item in Model)
+{
+    <li class="collection-item row s10">
+        <div class="valign-wrapper col s10">
+            @Html.DisplayFor(ModelItem => item.Descrição)
+        </div>
+
+        <div class="col s2 right">
+ 
+            </div>
+    </li>
+}

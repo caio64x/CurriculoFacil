@@ -76,12 +76,7 @@ namespace MontagemCurriculo.Controllers
             {
                 return View();
             }
-
-
-
         }
-
-
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel login)
@@ -129,7 +124,7 @@ namespace MontagemCurriculo.Controllers
             
 
             HttpContext.User = new GenericPrincipal(new GenericIdentity(string.Empty), null);
-            string rawUserId = HttpContext.User.FindFirstValue("UsuarioID");
+           
 
             
             Unauthorized();

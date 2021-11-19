@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,6 +14,7 @@ using Rotativa.AspNetCore;
 
 namespace MontagemCurriculo.Controllers
 {
+    [Authorize]
     public class CurriculosController : Controller
     {
         private readonly Contexto _context;
@@ -186,6 +189,33 @@ namespace MontagemCurriculo.Controllers
             return new ViewAsPdf("PDF", curriculoView) { FileName = "Curriculo.pdf" };
         }
 
-       
+        [AllowAnonymous]
+        public async Task<IActionResult> DetailsPublic(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var curriculo = await _context.Curriculos
+                .Include(c => c.Usuario)
+                .FirstOrDefaultAsync(m => m.CurriculoID == id);
+            if (curriculo == null)
+            {
+                return NotFound();
+            }
+
+            return View(curriculo);
+                      
+        }
+        //[AllowAnonymous]
+        //public async Task<JsonResult>  Listagem()
+        //{
+        //    var curriculo = await _context.Curriculos
+        //        .Include(c => c.Usuario)
+        //        .FirstOrDefaultAsync(m => m.CurriculoID == 8);
+        //    return Json(curriculo, JsonRequestBehavior.AllowGet);
+
+        //}
     }
 }

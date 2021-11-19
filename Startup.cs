@@ -29,8 +29,8 @@ namespace MontagemCurriculo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            //configurãcao de servicos e comunicacoes com banco de dados
+          
+            //configuracao de servicos e comunicacoes com banco de dados
             services.AddControllersWithViews();
             //serviço de contexto do banco de dados
             services.AddDbContext<Contexto>(opcoes => opcoes.UseSqlServer(Configuration.GetConnectionString("Conexao")));
@@ -46,9 +46,13 @@ namespace MontagemCurriculo
                     opcoes.LoginPath = "/Usuarios/Login";
                 });
 
-            
+            services.AddControllers()
+            .AddJsonOptions(options =>
+               options.JsonSerializerOptions.PropertyNamingPolicy = null);
+
             //injecao de dependencia para login
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
         }
 
         

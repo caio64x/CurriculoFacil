@@ -1,0 +1,14 @@
+﻿@model IEnumerable<MontagemCurriculo.Models.FormacaoAcademica>
+
+@foreach (var item in Model)
+{
+    <li class="collection-item row">
+        <div class="valign-wrapper col s10">
+            @Html.DisplayFor(modelItem => item.TipoCurso.Tipo) em @Html.DisplayFor(modelItem => item.NomeCurso) por
+            @Html.DisplayFor(modelItem => item.Instituicao), @Html.DisplayFor(modelItem => item.AnoInicio) - @Html.DisplayFor(modelItem => item.AnoFim)
+        </div>
+
+        <div class="col s2 right">
+        </div>
+    </li>
+}

@@ -1,0 +1,15 @@
+﻿@model IEnumerable<MontagemCurriculo.Models.ExperienciaProfissional>
+
+@foreach (var item in Model)
+{
+<li class="collection-item row">
+    <div class="valign-wrapper col s10">
+        @Html.DisplayFor(modelItem => item.Cargo) em @Html.DisplayFor(modelItem => item.NomeEmpresa)
+        @Html.DisplayFor(modelItem => item.AnoInicio) - @Html.DisplayFor(modelItem => item.AnoFim)
+        @Html.DisplayFor(modelItem => item.DescricaoAtividades)
+
+    </div>
+
+    <div class="col s2 right">
+    </div>
+</li>}
