@@ -35,7 +35,7 @@ namespace MontagemCurriculo.Controllers
             {
                 //adiciona e salva no contexto do banco de dados
                 _context.Add(usuario);
-
+                await _context.SaveChangesAsync();
                 //bloco de dados de informacoes
                 InformacaoLogin informacao = new InformacaoLogin
                 {
@@ -52,7 +52,9 @@ namespace MontagemCurriculo.Controllers
 
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Email, usuario.Email)
+                    new Claim(ClaimTypes.Email, usuario.Email),
+                    new Claim(ClaimTypes.NameIdentifier, Convert.ToString(usuario.UsuarioID))
+
                 };
 
                 var userIdentity = new ClaimsIdentity(claims, "login");
@@ -103,7 +105,8 @@ namespace MontagemCurriculo.Controllers
 
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Email, login.Email)
+                        new Claim(ClaimTypes.Email, login.Email),
+                        new Claim(ClaimTypes.NameIdentifier, Convert.ToString(ID))
                     };
 
                     var userIdentity = new ClaimsIdentity(claims, "login");

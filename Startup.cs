@@ -93,7 +93,9 @@ namespace MontagemCurriculo
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Usuarios}/{action=Login}/{id?}");
+                  //  pattern: "{controller=Usuarios}/{action=Login}/{id?}");
+                    pattern: "{controller=Curriculos}/{action=ListCurriculos}/{id?}");
+
             });
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authorization;
@@ -27,9 +28,25 @@ namespace MontagemCurriculo.Controllers
         }
 
         // GET: Curriculos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
-            var contexto = _context.Curriculos.Include(c => c.Usuario);
+             var userEmail = User.FindFirst(ClaimTypes.Email).Value;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var contexto = _context.Curriculos
+                .Include(c => c.Usuario)
+                .Where(c => c.Usuario.UsuarioID == Convert.ToInt32(userId));
+                                    
+            return View(await contexto.ToListAsync());
+        }
+
+        // GET: Lista de Curriculos
+        [AllowAnonymous]
+        public async Task<IActionResult> ListCurriculos()
+        {
+            var contexto = _context.Curriculos
+                .Include(u => u.Usuario)
+                .Where(c => c.CurriculoID > 0);
+
             return View(await contexto.ToListAsync());
         }
 

@@ -1,0 +1,44 @@
+﻿@model IEnumerable<MontagemCurriculo.Models.Curriculo>
+
+@{
+    ViewData["Title"] = "Currículos de usuários";
+}
+
+
+<h5>Currículos cadastrados</h5>
+
+<p>
+    <a  class="btn btn-small blue darken-2">Acessar portfólio do desenvolvedor</a>
+    
+</p>
+<table class="table striped hover highlight">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Usuario.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Usuario.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                <a asp-action="DetailsPublic" asp-route-id="@item.CurriculoID" class="btn btn-small deep-purple darken-2">Detalhes</a>
+
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
