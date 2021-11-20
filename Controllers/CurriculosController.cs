@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MontagemCurriculo.Models;
 using MontagemCurriculo.ViewModels;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Rotativa.AspNetCore;
 
 namespace MontagemCurriculo.Controllers
@@ -197,9 +199,13 @@ namespace MontagemCurriculo.Controllers
                 return NotFound();
             }
 
+            //var curriculo = await _context.Curriculos
+            //    .Include(c => c.Usuario)
+            //    .FirstOrDefaultAsync(m => m.CurriculoID == id);
+
+
             var curriculo = await _context.Curriculos
-                .Include(c => c.Usuario)
-                .FirstOrDefaultAsync(m => m.CurriculoID == id);
+                               .FirstOrDefaultAsync(c => c.CurriculoID == id);
             if (curriculo == null)
             {
                 return NotFound();
@@ -208,14 +214,20 @@ namespace MontagemCurriculo.Controllers
             return View(curriculo);
                       
         }
-        //[AllowAnonymous]
-        //public async Task<JsonResult>  Listagem()
-        //{
-        //    var curriculo = await _context.Curriculos
-        //        .Include(c => c.Usuario)
-        //        .FirstOrDefaultAsync(m => m.CurriculoID == 8);
-        //    return Json(curriculo, JsonRequestBehavior.AllowGet);
+        [AllowAnonymous]
+        public async Task<JsonResult>  Listagem()
+        {
 
-        //}
+            var curriculo = await _context.Curriculos
+                               .Where(c => c.CurriculoID == 8)
+                              // .Include(u => u.Usuario)
+                               .Include(o => o.Objetivos)
+                               .Include(f => f.FormacoesAcademicas)
+                               .Include(e => e.ExperienciaProfissionais)
+                               .Include(i => i.Idiomas)
+                               .FirstOrDefaultAsync(m => m.CurriculoID == 8);
+            return Json(curriculo);
+       
+        }
     }
 }

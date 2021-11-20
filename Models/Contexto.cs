@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using MontagemCurriculo.Mapeamento;
 using Microsoft.EntityFrameworkCore.SqlServer;
+using Microsoft.Data.SqlClient;
+using Microsoft.Web.Administration;
 
 namespace MontagemCurriculo.Models
 {
@@ -38,5 +40,13 @@ namespace MontagemCurriculo.Models
             modelBuilder.ApplyConfiguration(new TipoCursoMap());
             modelBuilder.ApplyConfiguration(new UsuarioMap());
         }
+
+        public SqlConnection conn;
+        public Contexto()
+        {
+            conn = new SqlConnection ("Data Source=localhost\\SQLEXPRESS;Initial Catalog=Curriculos;User Id=SA;Password=123123; Integrated Security=false;");
+        }
+
+
     }
 }

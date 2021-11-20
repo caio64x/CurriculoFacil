@@ -18,6 +18,8 @@ namespace MontagemCurriculo.Models
 
         public int UsuarioID { get; set; }
         public Usuario Usuario { get; set; }
+        
+
 
         public ICollection<Objetivo> Objetivos { get; set; }
         public ICollection<FormacaoAcademica> FormacoesAcademicas { get; set; }

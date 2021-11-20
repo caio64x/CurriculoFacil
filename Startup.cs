@@ -46,6 +46,10 @@ namespace MontagemCurriculo
                     opcoes.LoginPath = "/Usuarios/Login";
                 });
 
+            services.AddControllersWithViews()
+            .AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddControllers()
             .AddJsonOptions(options =>
                options.JsonSerializerOptions.PropertyNamingPolicy = null);
@@ -91,8 +95,6 @@ namespace MontagemCurriculo
                     name: "default",
                     pattern: "{controller=Usuarios}/{action=Login}/{id?}");
             });
-
-
         }
     }
 }
