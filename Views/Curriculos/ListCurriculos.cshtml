@@ -5,40 +5,58 @@
 }
 
 
-<h5>Currículos cadastrados</h5>
+<h4>Portfolios cadastrados </h4>
 
 <p>
-    <a  class="btn btn-small blue darken-2">Acessar portfólio do desenvolvedor</a>
-    
+    <a asp-action="DetailsPublic" asp-route-id="8" class="btn btn-small blue darken-2">Acessar portfólio do desenvolvedor</a>
+
 </p>
-<table class="table striped hover highlight">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Usuario.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Usuario.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                <a asp-action="DetailsPublic" asp-route-id="@item.CurriculoID" class="btn btn-small deep-purple darken-2">Detalhes</a>
+<div>
+    <table id="Curriculos" class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Usuario.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nome)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Usuario.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        <a asp-action="DetailsPublic" asp-route-id="@item.CurriculoID" class="btn btn-small deep-purple darken-2">Detalhes</a>
 
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#Curriculos').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
+                },
+                
+                "bLengthChange": false,
+                "bFilter": true,
+                
+            });
+        });
+    </script>
+  
+}
