@@ -5,7 +5,7 @@
 }
 
 
-<h5>Currículos cadastrados</h5>
+<h5>Portifólios cadastrados</h5>
 
 <p>
     <a asp-action="Create" class="btn btn-small blue darken-2">Novo currículo</a>
@@ -17,23 +17,34 @@
             <th>
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.CurriculoID" class="btn btn-small blue darken-2">Atualizar</a> |
-                    <a asp-action="Details" asp-route-id="@item.CurriculoID" class="btn btn-small deep-purple darken-2">Detalhes</a> |
-                    <a class="btn btn-small red darken-4 modal-trigger" onclick="ExibirModal(@item.CurriculoID)">Excluir</a>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CurriculoID" class="btn btn-small blue darken-2">Atualizar</a> |
+                <a asp-action="Details" asp-route-id="@item.CurriculoID" class="btn btn-small deep-purple darken-2">Detalhes</a> |
+                <a class="btn btn-small red darken-4 modal-trigger" onclick="ExibirModal(@item.CurriculoID)">Excluir</a>
+                <label>
+                    @if (item.Principal)
+                    {
+                        <input type="checkbox" checked="checked" class="filled-in " onclick="AtualizarPrincipal(@item.CurriculoID)"/>
 
-                </td>
-            </tr>
+                    }
+                    else
+                    {
+                        <input type="checkbox" class="filled-in " onclick="AtualizarPrincipal(@item.CurriculoID)"/>
+                    }
+                    <span>Exibir para o público</span>
+                </label>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
@@ -47,6 +58,17 @@
     <div class="modal-footer">
         <a class="modal-close btn green accent-4">Não</a>
         <a class="modal-close btn red accent-4 btnConfirmar">Sim</a>
+    </div>
+</div>
+
+<div ID="modal2" class="modal">
+    <div class="modal-content">
+        <h4>Confirmar atualização</h4>
+        <p>Deseja prosseguir com a atualização?</p>
+    </div>
+    <div class="modal-footer">
+        <a class="modal-close btn green accent-4">Não</a>
+        <a class="modal-close btn red accent-4 btnAtualizar">Sim</a>
     </div>
 </div>
 
@@ -72,5 +94,22 @@
             })
         }
 
+     
+
+        function AtualizarPrincipal(ID) {
+            $("#modal2").modal("open");
+
+            $(".btnAtualizar").on('click', function () {
+                $.ajax({
+                    method: "POST",
+                    url: "/Curriculos/AtualizarPrincipal",
+                    data: { ID: ID },
+                    success: function () {
+                        alert("Atualização feita com sucesso");
+                        location.reload();
+                    }
+                });
+            })
+        }
     </script>
 }

@@ -30,6 +30,8 @@ namespace MontagemCurriculo.Mapeamento
             builder.HasMany(c => c.ExperienciaProfissionais).WithOne(c => c.Curriculo).OnDelete(DeleteBehavior.Cascade);
             //tem muitos Idiomas com um curriculo
             builder.HasMany(c => c.Idiomas).WithOne(c => c.Curriculo).OnDelete(DeleteBehavior.Cascade);
+            //propriedade comum
+            builder.Property(c => c.Principal);
 
             builder.ToTable("Curriculos");
         }

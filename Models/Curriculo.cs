@@ -20,7 +20,7 @@ namespace MontagemCurriculo.Models
 
         public int UsuarioID { get; set; }
         public Usuario Usuario { get; set; }
-        
+        public bool Principal { get; set; }
 
 
         public ICollection<Objetivo> Objetivos { get; set; }

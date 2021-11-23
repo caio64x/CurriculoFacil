@@ -45,6 +45,7 @@ namespace MontagemCurriculo.Controllers
         {
             var contexto = _context.Curriculos
                 .Include(u => u.Usuario)
+                .Where(c => c.Principal == true)
                 .Where(c => c.CurriculoID > 0);
 
             return View(await contexto.ToListAsync());
@@ -82,14 +83,23 @@ namespace MontagemCurriculo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CurriculoID,Nome,UsuarioID")] Curriculo curriculo)
         {
-            curriculo.UsuarioID = int.Parse(HttpContext.Session.GetInt32("UsuarioID").ToString());
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(curriculo);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                curriculo.UsuarioID = int.Parse(HttpContext.Session.GetInt32("UsuarioID").ToString());
+                if (ModelState.IsValid)
+                {
+                    _context.Add(curriculo);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(curriculo);
             }
-            return View(curriculo);
+            catch
+            {
+
+                return RedirectToAction("Error", "Shared");
+            }
+           
         }
 
         // GET: Curriculos/Edit/5
@@ -144,24 +154,24 @@ namespace MontagemCurriculo.Controllers
             return View(curriculo);
         }
 
-        // GET: Curriculos/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// GET: Curriculos/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var curriculo = await _context.Curriculos
-                .Include(c => c.Usuario)
-                .FirstOrDefaultAsync(m => m.CurriculoID == id);
-            if (curriculo == null)
-            {
-                return NotFound();
-            }
+        //    var curriculo = await _context.Curriculos
+        //        .Include(c => c.Usuario)
+        //        .FirstOrDefaultAsync(m => m.CurriculoID == id);
+        //    if (curriculo == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(curriculo);
-        }
+        //    return View(curriculo);
+        //}
 
         // POST: Curriculos/Delete/5
         [HttpPost]
@@ -171,6 +181,28 @@ namespace MontagemCurriculo.Controllers
             _context.Curriculos.Remove(curriculo);
             await _context.SaveChangesAsync();
             return Json(curriculo.Nome + "excluido com sucesso");
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AtualizarPrincipal(int ID)
+        {
+            var curriculo = await _context.Curriculos.FindAsync(ID);
+            if (curriculo.Principal)
+            {
+                curriculo.Principal = false;
+                _context.Curriculos.Update(curriculo);
+                await _context.SaveChangesAsync();
+
+            }
+            else
+            {
+                curriculo.Principal = true;
+                _context.Curriculos.Update(curriculo);
+                await _context.SaveChangesAsync();
+
+            }
+
+            return Json(curriculo.Nome + "Atualizado com sucesso");
         }
 
         private bool CurriculoExists(int id)
@@ -222,12 +254,8 @@ namespace MontagemCurriculo.Controllers
                 return NotFound();
             }
 
-            //var curriculo = await _context.Curriculos
-            //    .Include(c => c.Usuario)
-            //    .FirstOrDefaultAsync(m => m.CurriculoID == id);
-
-
             var curriculo = await _context.Curriculos
+                               .Where(c => c.Principal == true)
                                .FirstOrDefaultAsync(c => c.CurriculoID == id);
             if (curriculo == null)
             {
