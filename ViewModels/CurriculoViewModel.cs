@@ -16,4 +16,9 @@ namespace MontagemCurriculo.ViewModels
 
         public IEnumerable<Idioma> Idiomas { get; set; }
     }
+
+    public class ObjetivoViewModel
+    {
+        public IEnumerable<Objetivo> Objetivos { get; set; }
+    }
 }

@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MontagemCurriculo", "MontagemCurriculo.csproj", "{0935E568-CC6A-49E8-8F79-4B049C79F09B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MontagemCurriculoTests", "..\MontagemCurriculoTests\MontagemCurriculoTests.csproj", "{453E3ADF-526A-4F71-A123-7C5AC8CFDDDD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{0935E568-CC6A-49E8-8F79-4B049C79F09B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0935E568-CC6A-49E8-8F79-4B049C79F09B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0935E568-CC6A-49E8-8F79-4B049C79F09B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{453E3ADF-526A-4F71-A123-7C5AC8CFDDDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{453E3ADF-526A-4F71-A123-7C5AC8CFDDDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{453E3ADF-526A-4F71-A123-7C5AC8CFDDDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{453E3ADF-526A-4F71-A123-7C5AC8CFDDDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

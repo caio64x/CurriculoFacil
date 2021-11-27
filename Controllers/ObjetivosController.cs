@@ -7,8 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MontagemCurriculo.Models;
 using MontagemCurriculo.Controllers;
+using Microsoft.AspNetCore.Authorization;
+
 namespace MontagemCurriculo.Controllers
 {
+    [Authorize]
     public class ObjetivosController : Controller
     {
         private readonly Contexto _context;

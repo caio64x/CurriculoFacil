@@ -56,7 +56,7 @@ namespace MontagemCurriculo
 
             //injecao de dependencia para login
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
+           
         }
 
         

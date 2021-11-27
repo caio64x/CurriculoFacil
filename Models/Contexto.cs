@@ -21,8 +21,9 @@ namespace MontagemCurriculo.Models
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<InformacaoLogin> InformacoesLogin { get; set; }
         public DbSet<ExperienciaProfissional> ExperienciasProfissionais { get; set; }
+     
 
-        
+
 
         public Contexto(DbContextOptions<Contexto> opcoes) : base(opcoes)
         {

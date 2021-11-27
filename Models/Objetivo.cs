@@ -19,5 +19,6 @@ namespace MontagemCurriculo.Models
 
         public int CurriculoID { get; set; }
         public Curriculo Curriculo { get; set; }
+
     }
 }

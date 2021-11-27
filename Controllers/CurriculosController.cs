@@ -14,6 +14,7 @@ using MontagemCurriculo.ViewModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Rotativa.AspNetCore;
+using Rotativa;
 
 namespace MontagemCurriculo.Controllers
 {
@@ -154,24 +155,7 @@ namespace MontagemCurriculo.Controllers
             return View(curriculo);
         }
 
-        //// GET: Curriculos/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var curriculo = await _context.Curriculos
-        //        .Include(c => c.Usuario)
-        //        .FirstOrDefaultAsync(m => m.CurriculoID == id);
-        //    if (curriculo == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(curriculo);
-        //}
+   
 
         // POST: Curriculos/Delete/5
         [HttpPost]
@@ -211,39 +195,33 @@ namespace MontagemCurriculo.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> VisualizarComoPDFAsync(int? id)
+        public ActionResult PDF(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var curriculo = await _context.Curriculos
+            Curriculo curriculo = _context.Curriculos
                 .Include(c => c.Usuario)
-                .FirstOrDefaultAsync(m => m.CurriculoID == id);
+                .FirstOrDefaultAsync(m => m.CurriculoID == id).Result;
             if (curriculo == null)
             {
                 return NotFound();
             }
 
-
+            
             var idUsuario = HttpContext.Session.GetInt32("UsuarioID");
 
-            //CurriculoViewModel curriculoView = new CurriculoViewModel();
-            //curriculoView.Objetivos = _context.Objetivos.Where(o => o.Curriculo.UsuarioID == idUsuario && o.CurriculoID == curriculo.CurriculoID).ToList();
-            //curriculoView.FormacoesAcademicas = _context.FormacoesAcademicas.Include(fa => fa.TipoCurso).Where(fa => fa.Curriculo.UsuarioID == idUsuario && fa.Curriculo.CurriculoID == curriculo.CurriculoID).ToList();
-            //curriculoView.ExperienciasProfissionais = _context.ExperienciasProfissionais.Where(ep => ep.Curriculo.UsuarioID == idUsuario && ep.Curriculo.CurriculoID == curriculo.CurriculoID).ToList();
-            //curriculoView.Idiomas = _context.Idiomas.Where(i => i.Curriculo.UsuarioID == idUsuario && i.Curriculo.CurriculoID == curriculo.CurriculoID).ToList();
+            CurriculoViewModel curriculoV = new CurriculoViewModel();
+            curriculoV.Objetivos = _context.Objetivos.Where(o => o.CurriculoID == curriculo.CurriculoID).ToList();
+            curriculoV.FormacoesAcademicas = _context.FormacoesAcademicas.Include(fa => fa.TipoCurso).Where(fa => fa.Curriculo.CurriculoID == curriculo.CurriculoID).ToList();
+            curriculoV.ExperienciasProfissionais = _context.ExperienciasProfissionais.Where(ep => ep.Curriculo.CurriculoID == curriculo.CurriculoID).ToList();
+            curriculoV.Idiomas = _context.Idiomas.Where(i => i.Curriculo.CurriculoID == curriculo.CurriculoID).ToList();
 
-            CurriculoViewModel curriculoView = new CurriculoViewModel();
-            curriculoView.Objetivos = _context.Objetivos.Where(o => o.CurriculoID == curriculo.CurriculoID).ToList();
-            curriculoView.FormacoesAcademicas = _context.FormacoesAcademicas.Include(fa => fa.TipoCurso).Where(fa => fa.Curriculo.CurriculoID == curriculo.CurriculoID).ToList();
-            curriculoView.ExperienciasProfissionais = _context.ExperienciasProfissionais.Where(ep => ep.Curriculo.CurriculoID == curriculo.CurriculoID).ToList();
-            curriculoView.Idiomas = _context.Idiomas.Where(i => i.Curriculo.CurriculoID == curriculo.CurriculoID).ToList();
-
-
-
-            return new ViewAsPdf("PDF", curriculoView) { FileName = "Curriculo.pdf" };
+           // return new ViewAsPdf(curriculoV);
+            return  new ViewAsPdf("PDF", curriculoV) { FileName = "Portifolio.pdf" };
+            
         }
 
         [AllowAnonymous]
@@ -265,21 +243,58 @@ namespace MontagemCurriculo.Controllers
             return View(curriculo);
                       
         }
+   
         [AllowAnonymous]
-        public async Task<JsonResult>  Listagem()
+        public async Task<JsonResult> Objetivos()
         {
-
-            var curriculo = await _context.Curriculos
-                               .Where(c => c.CurriculoID == 8)
-                              // .Include(u => u.Usuario)
-                               .Include(o => o.Objetivos)
-                               .Include(f => f.FormacoesAcademicas)
-                               .Include(e => e.ExperienciaProfissionais)
-                               .Include(i => i.Idiomas)
-                               .FirstOrDefaultAsync(m => m.CurriculoID == 8);
-            return Json(curriculo);
+            List<Objetivo> Objetivos = new List<Objetivo>();
+            Objetivos = _context.Objetivos.Where(o => o.CurriculoID == 8).ToList();
+            return Json(Objetivos);
        
         }
+
+        [AllowAnonymous]
+        public async Task<JsonResult> FormacoesAcademicas()
+        {
+            List<FormacaoAcademica> FormacoesAcademicas = new List<FormacaoAcademica>();
+            FormacoesAcademicas = _context.FormacoesAcademicas.Where(fa => fa.Curriculo.CurriculoID == 8).ToList();
+            return Json(FormacoesAcademicas);
+
+        }
+
+        [AllowAnonymous]
+        public async Task<JsonResult> ExperienciaProfissionais()
+        {
+            List<ExperienciaProfissional> ExperienciasProfissionais = new List<ExperienciaProfissional>();
+            ExperienciasProfissionais = _context.ExperienciasProfissionais.Where(ep => ep.Curriculo.CurriculoID == 8).ToList();
+            return Json(ExperienciasProfissionais);
+
+        }
+
+        [AllowAnonymous]
+        public async Task<JsonResult> Idiomas()
+        {
+            List<Idioma> Idiomas = new List<Idioma>();
+            Idiomas = _context.Idiomas.Where(i => i.Curriculo.CurriculoID == 8).ToList();
+            return Json(Idiomas);
+
+        }
+
+        [AllowAnonymous]
+        public async Task<JsonResult> Listagem()
+        {
+
+
+            CurriculoViewModel curriculoV = new CurriculoViewModel();
+            curriculoV.Objetivos = _context.Objetivos.Where(o => o.CurriculoID == 8).ToList();
+            curriculoV.FormacoesAcademicas = _context.FormacoesAcademicas.Where(fa => fa.Curriculo.CurriculoID == 8).ToList();
+            curriculoV.ExperienciasProfissionais = _context.ExperienciasProfissionais.Where(ep => ep.Curriculo.CurriculoID == 8).ToList();
+            curriculoV.Idiomas = _context.Idiomas.Where(i => i.Curriculo.CurriculoID == 8).ToList();
+            return Json(curriculoV);
+
+        }
+
+
 
         public JsonResult NomeExiste(string Nome)
         {

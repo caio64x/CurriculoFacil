@@ -14,12 +14,12 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <div class="row">
-                   
-                    <div class="input-field col s6">
-                        <p>
-                            <label for="Instituicao">Tipo de curso</label>
+                    <p>
+                        <label for="Instituicao">Tipo de curso</label>
 
-                        </p>
+                    </p>
+                    <div class="input-field col s6">
+
                         <select asp-for="TipoCursoID" class="browser-default" asp-items="ViewBag.TipoCursoID">Tipo de curso</select>
                         <span asp-validation-for="TipoCursoID" class="red-text darken-3"></span>
                         <br />

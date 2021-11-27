@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MontagemCurriculo.Models;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace MontagemCurriculo.Controllers
 {
+    [Authorize]
     public class InformacoesLoginController : Controller
     {
         private readonly Contexto _contexto;
@@ -24,7 +26,7 @@ namespace MontagemCurriculo.Controllers
         {
             var usuarioID = HttpContext.Session.GetInt32("UsuarioID");
 
-            return View(await _contexto.InformacoesLogin.Include(u => u.Usuario).Where(i => i.UsuarioID == usuarioID).ToListAsync());
+            return View(await _contexto.InformacoesLogin.Include(u => u.Usuario).Where(i => i.UsuarioID == usuarioID).OrderByDescending(i => i.Data).ToListAsync());
 
 
         }
