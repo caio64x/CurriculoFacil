@@ -42,7 +42,7 @@ namespace MontagemCurriculo.Controllers
 
         // GET: Lista de Curriculos
         [AllowAnonymous]
-        public async Task<IActionResult> ListCurriculos()
+        public async Task<IActionResult> IndexPublic()
         {
             var contexto = _context.Curriculos
                 .Include(u => u.Usuario)
@@ -220,7 +220,7 @@ namespace MontagemCurriculo.Controllers
             curriculoV.Idiomas = _context.Idiomas.Where(i => i.Curriculo.CurriculoID == curriculo.CurriculoID).ToList();
 
            // return new ViewAsPdf(curriculoV);
-            return  new ViewAsPdf("PDF", curriculoV) { FileName = "Portifolio.pdf" };
+            return  new ViewAsPdf("PDF", curriculoV) { FileName = "Portfolio.pdf" };
             
         }
 

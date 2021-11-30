@@ -15,7 +15,7 @@ namespace MontagemCurriculo.Models
 
         [Required(ErrorMessage = "Campo obrigtório")]
         [StringLength(50, ErrorMessage = "Use menos caracteres")]
-        [Remote("NomeExiste", "Curriculos")]
+        
         public string Nome { get; set; }
 
         public int UsuarioID { get; set; }
