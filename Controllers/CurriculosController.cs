@@ -22,7 +22,7 @@ namespace MontagemCurriculo.Controllers
     public class CurriculosController : Controller
     {
         private readonly Contexto _context;
-     
+
         public CurriculosController(Contexto context)
         {
             _context = context;
@@ -31,12 +31,12 @@ namespace MontagemCurriculo.Controllers
         // GET: Curriculos
         public async Task<IActionResult> Index(int id)
         {
-             var userEmail = User.FindFirst(ClaimTypes.Email).Value;
+            var userEmail = User.FindFirst(ClaimTypes.Email).Value;
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var contexto = _context.Curriculos
                 .Include(c => c.Usuario)
                 .Where(c => c.Usuario.UsuarioID == Convert.ToInt32(userId));
-                                    
+
             return View(await contexto.ToListAsync());
         }
 
@@ -100,11 +100,11 @@ namespace MontagemCurriculo.Controllers
 
                 return RedirectToAction("Error", "Shared");
             }
-           
+
         }
 
         // GET: Curriculos/Edit/5
-  public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -115,7 +115,7 @@ namespace MontagemCurriculo.Controllers
             if (curriculo == null)
             {
                 return NotFound();
-            }           
+            }
             return View(curriculo);
         }
 
@@ -155,7 +155,7 @@ namespace MontagemCurriculo.Controllers
             return View(curriculo);
         }
 
-   
+
 
         // POST: Curriculos/Delete/5
         [HttpPost]
@@ -210,7 +210,7 @@ namespace MontagemCurriculo.Controllers
                 return NotFound();
             }
 
-            
+
             var idUsuario = HttpContext.Session.GetInt32("UsuarioID");
 
             CurriculoViewModel curriculoV = new CurriculoViewModel();
@@ -219,9 +219,9 @@ namespace MontagemCurriculo.Controllers
             curriculoV.ExperienciasProfissionais = _context.ExperienciasProfissionais.Where(ep => ep.Curriculo.CurriculoID == curriculo.CurriculoID).ToList();
             curriculoV.Idiomas = _context.Idiomas.Where(i => i.Curriculo.CurriculoID == curriculo.CurriculoID).ToList();
 
-           // return new ViewAsPdf(curriculoV);
-            return  new ViewAsPdf("PDF", curriculoV) { FileName = "Portfolio.pdf" };
-            
+            // return new ViewAsPdf(curriculoV);
+            return new ViewAsPdf("PDF", curriculoV) { FileName = "Portfolio.pdf" };
+
         }
 
         [AllowAnonymous]
@@ -241,16 +241,16 @@ namespace MontagemCurriculo.Controllers
             }
 
             return View(curriculo);
-                      
+
         }
-   
+
         [AllowAnonymous]
         public async Task<JsonResult> Objetivos()
         {
             List<Objetivo> Objetivos = new List<Objetivo>();
             Objetivos = _context.Objetivos.Where(o => o.CurriculoID == 8).ToList();
             return Json(Objetivos);
-       
+
         }
 
         [AllowAnonymous]
@@ -296,17 +296,17 @@ namespace MontagemCurriculo.Controllers
 
 
 
-        public JsonResult NomeExiste(string Nome)
-        {
-            if (!_context.Curriculos.Any(e => e.Nome == Nome))
-            {
-                return Json(true);
-            }
-            else
-            {
-                return Json("Nome existente");
-            }
+        //public JsonResult NomeExiste(string Nome)
+        //{
+        //    if (!_context.Curriculos.Any(e => e.Nome == Nome))
+        //    {
+        //        return Json(true);
+        //    }
+        //    else
+        //    {
+        //        return Json("Nome existente");
+        //    }
 
-        }
+        //}
     }
 }
