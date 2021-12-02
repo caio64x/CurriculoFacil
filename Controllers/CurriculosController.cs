@@ -57,15 +57,16 @@ namespace MontagemCurriculo.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
-
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var curriculo = await _context.Curriculos
                 .Include(c => c.Usuario)
+                .Where(c => c.UsuarioID == Convert.ToInt32(userId))
                 .FirstOrDefaultAsync(m => m.CurriculoID == id);
             if (curriculo == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
 
             return View(curriculo);
@@ -86,7 +87,8 @@ namespace MontagemCurriculo.Controllers
         {
             try
             {
-                curriculo.UsuarioID = int.Parse(HttpContext.Session.GetInt32("UsuarioID").ToString());
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                curriculo.UsuarioID = Convert.ToInt32(userId);
                 if (ModelState.IsValid)
                 {
                     _context.Add(curriculo);
@@ -108,13 +110,16 @@ namespace MontagemCurriculo.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
-
-            var curriculo = await _context.Curriculos.FindAsync(id);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var curriculo = await _context.Curriculos
+                   .Include(c => c.Usuario)
+                   .Where(c => c.UsuarioID == Convert.ToInt32(userId) && c.CurriculoID == id)
+                   .FirstOrDefaultAsync();
             if (curriculo == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
             return View(curriculo);
         }
@@ -124,12 +129,12 @@ namespace MontagemCurriculo.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CurriculoID,Nome,UsuarioID")] Curriculo curriculo)
+        public async Task<IActionResult> Edit(int id, [Bind("CurriculoID,Nome,UsuarioID,Usuario")] Curriculo curriculo)
         {
-            curriculo.UsuarioID = int.Parse(HttpContext.Session.GetInt32("UsuarioID").ToString());
+            curriculo.UsuarioID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             if (id != curriculo.CurriculoID)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
 
             if (ModelState.IsValid)
@@ -143,7 +148,7 @@ namespace MontagemCurriculo.Controllers
                 {
                     if (!CurriculoExists(curriculo.CurriculoID))
                     {
-                        return NotFound();
+                        return RedirectToAction("Error", "Shared");
                     }
                     else
                     {
@@ -199,7 +204,7 @@ namespace MontagemCurriculo.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
 
             Curriculo curriculo = _context.Curriculos
@@ -207,11 +212,11 @@ namespace MontagemCurriculo.Controllers
                 .FirstOrDefaultAsync(m => m.CurriculoID == id).Result;
             if (curriculo == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
 
 
-            var idUsuario = HttpContext.Session.GetInt32("UsuarioID");
+            // var idUsuario = HttpContext.Session.GetInt32("UsuarioID");
 
             CurriculoViewModel curriculoV = new CurriculoViewModel();
             curriculoV.Objetivos = _context.Objetivos.Where(o => o.CurriculoID == curriculo.CurriculoID).ToList();
@@ -229,7 +234,7 @@ namespace MontagemCurriculo.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
 
             var curriculo = await _context.Curriculos
@@ -237,7 +242,7 @@ namespace MontagemCurriculo.Controllers
                                .FirstOrDefaultAsync(c => c.CurriculoID == id);
             if (curriculo == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
 
             return View(curriculo);

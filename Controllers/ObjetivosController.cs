@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using MontagemCurriculo.Models;
 using MontagemCurriculo.Controllers;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace MontagemCurriculo.Controllers
 {
@@ -15,7 +16,7 @@ namespace MontagemCurriculo.Controllers
     public class ObjetivosController : Controller
     {
         private readonly Contexto _context;
-
+        
         public ObjetivosController(Contexto context)
         {
             _context = context;
@@ -59,14 +60,24 @@ namespace MontagemCurriculo.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
+            }
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var objetivo = await _context.Objetivos.FindAsync(id);
+
+            var curriculo = await _context.Curriculos
+                   .Include(c => c.Usuario)
+                   .Where(c => c.UsuarioID == Convert.ToInt32(userId) && c.CurriculoID == objetivo.CurriculoID)
+                   .FirstOrDefaultAsync();
+
+        //   objetivo.CurriculoID
+
+            if (objetivo == null || curriculo == null)
+            {
+                return RedirectToAction("Error", "Shared");
             }
 
-            var objetivo = await _context.Objetivos.FindAsync(id);
-            if (objetivo == null)
-            {
-                return NotFound();
-            }
+
             return View(objetivo);
         }
 
@@ -77,9 +88,15 @@ namespace MontagemCurriculo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ObjetivoID,Descrição,CurriculoID")] Objetivo objetivo)
         {
-            if (id != objetivo.ObjetivoID)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var curriculo = await _context.Curriculos
+                  .Include(c => c.Usuario)
+                  .Where(c => c.UsuarioID == Convert.ToInt32(userId) && c.CurriculoID == objetivo.CurriculoID)
+                  .FirstOrDefaultAsync();
+
+            if (id != objetivo.ObjetivoID || curriculo == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
 
             if (ModelState.IsValid)
@@ -93,7 +110,7 @@ namespace MontagemCurriculo.Controllers
                 {
                     if (!ObjetivoExists(objetivo.ObjetivoID))
                     {
-                        return NotFound();
+                        return RedirectToAction("Error", "Shared");
                     }
                     else
                     {

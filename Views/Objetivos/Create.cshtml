@@ -19,14 +19,15 @@
                      style="margin: 0px; height: 170px;"></textarea>
                  
                     <label for="Descrição">Descrição</label>
-                    <span asp-validation-for="Descrição" class="red-text darken-3"></span>
+                    <span asp-validation-for="Descrição" class="red-text darken-4"></span>
                 </div>
             </div>
             <input asp-for="CurriculoID" type="hidden" />
 
             <div class="row">
                 <input type="submit" value="Salvar" class="btn btn-small green darken-1" /> &nbsp;
-                <a asp-action="Details" asp-controller="Curriculos" asp-route-id="@Model.CurriculoID">Voltar</a>
+                <a asp-action="
+                   ils" asp-controller="Curriculos" asp-route-id="@Model.CurriculoID">Voltar</a>
 
             </div>
         </form>

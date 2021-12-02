@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,13 +45,18 @@ namespace MontagemCurriculo.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
 
             var idioma = await _context.Idiomas.FindAsync(id);
-            if (idioma == null)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var curriculo = await _context.Curriculos
+                  .Include(c => c.Usuario)
+                  .Where(c => c.UsuarioID == Convert.ToInt32(userId) && c.CurriculoID == idioma.CurriculoID)
+                  .FirstOrDefaultAsync();
+            if (idioma == null || curriculo == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }            
             return View(idioma);
         }
@@ -59,9 +65,14 @@ namespace MontagemCurriculo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdiomaID,Nome,Nivel,CurriculoID")] Idioma idioma)
         {
-            if (id != idioma.IdiomaID)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var curriculo = await _context.Curriculos
+                  .Include(c => c.Usuario)
+                  .Where(c => c.UsuarioID == Convert.ToInt32(userId) && c.CurriculoID == idioma.CurriculoID)
+                  .FirstOrDefaultAsync();
+            if (id != idioma.IdiomaID || curriculo == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
 
             if (ModelState.IsValid)
@@ -75,7 +86,7 @@ namespace MontagemCurriculo.Controllers
                 {
                     if (!IdiomaExists(idioma.IdiomaID))
                     {
-                        return NotFound();
+                        return RedirectToAction("Error", "Shared");
                     }
                     else
                     {

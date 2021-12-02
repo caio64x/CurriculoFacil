@@ -42,11 +42,7 @@ namespace MontagemCurriculo.Models
             modelBuilder.ApplyConfiguration(new UsuarioMap());
         }
 
-        public SqlConnection conn;
-        public Contexto()
-        {
-            conn = new SqlConnection ("Data Source=localhost\\SQLEXPRESS;Initial Catalog=Curriculos;User Id=SA;Password=123123; Integrated Security=false;");
-        }
+     
 
 
     }

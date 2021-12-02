@@ -31,14 +31,14 @@ namespace MontagemCurriculo.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+               return RedirectToAction("Error", "Shared");
             }
 
             var tipoCurso = await _context.TipoCursos
                 .FirstOrDefaultAsync(m => m.TipoCursoID == id);
             if (tipoCurso == null)
             {
-                return NotFound();
+               return RedirectToAction("Error", "Shared");
             }
 
             return View(tipoCurso);
@@ -71,13 +71,13 @@ namespace MontagemCurriculo.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+               return RedirectToAction("Error", "Shared");
             }
 
             var tipoCurso = await _context.TipoCursos.FindAsync(id);
             if (tipoCurso == null)
             {
-                return NotFound();
+               return RedirectToAction("Error", "Shared");
             }
             return View(tipoCurso);
         }
@@ -91,7 +91,7 @@ namespace MontagemCurriculo.Controllers
         {
             if (id != tipoCurso.TipoCursoID)
             {
-                return NotFound();
+               return RedirectToAction("Error", "Shared");
             }
 
             if (ModelState.IsValid)
@@ -105,7 +105,7 @@ namespace MontagemCurriculo.Controllers
                 {
                     if (!TipoCursoExists(tipoCurso.TipoCursoID))
                     {
-                        return NotFound();
+                       return RedirectToAction("Error", "Shared");
                     }
                     else
                     {

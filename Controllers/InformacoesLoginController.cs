@@ -6,6 +6,7 @@ using MontagemCurriculo.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,16 +25,25 @@ namespace MontagemCurriculo.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var usuarioID = HttpContext.Session.GetInt32("UsuarioID");
 
-            return View(await _contexto.InformacoesLogin.Include(u => u.Usuario).Where(i => i.UsuarioID == usuarioID).OrderByDescending(i => i.Data).ToListAsync());
+            try
+            {
+                int usuarioID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
+                return View(await _contexto.InformacoesLogin.Include(u => u.Usuario).Where(i => i.UsuarioID == usuarioID).OrderByDescending(i => i.InformacaoLoginID).ToListAsync());
+
+            }
+            catch 
+            {
+                return RedirectToAction("Error", "Shared");
+            }
+            
 
         }
 
         public IActionResult DownloadDados()
         {
-            var usuarioID = HttpContext.Session.GetInt32("UsuarioID");
+            int usuarioID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             var dados = _contexto.InformacoesLogin.Include(u => u.Usuario).Where(i => i.UsuarioID == usuarioID).ToList();
             StringBuilder arquivo = new StringBuilder();

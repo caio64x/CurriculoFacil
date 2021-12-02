@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,15 +43,21 @@ namespace MontagemCurriculo.Controllers
        
         public async Task<IActionResult> Edit(int? id)
         {
+            
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
 
             var experienciaProfissional = await _context.ExperienciasProfissionais.FindAsync(id);
-            if (experienciaProfissional == null)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var curriculo = await _context.Curriculos
+                  .Include(c => c.Usuario)
+                  .Where(c => c.UsuarioID == Convert.ToInt32(userId) && c.CurriculoID == experienciaProfissional.CurriculoID)
+                  .FirstOrDefaultAsync();
+            if (experienciaProfissional == null || curriculo == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }            
             return View(experienciaProfissional);
         }
@@ -59,9 +66,14 @@ namespace MontagemCurriculo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ExperienciaProfissionalID,NomeEmpresa,Cargo,AnoInicio,AnoFim,DescricaoAtividades,CurriculoID")] ExperienciaProfissional experienciaProfissional)
         {
-            if (id != experienciaProfissional.ExperienciaProfissionalID)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var curriculo = await _context.Curriculos
+                  .Include(c => c.Usuario)
+                  .Where(c => c.UsuarioID == Convert.ToInt32(userId) && c.CurriculoID == experienciaProfissional.CurriculoID)
+                  .FirstOrDefaultAsync();
+            if (id != experienciaProfissional.ExperienciaProfissionalID || curriculo == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
 
             if (ModelState.IsValid)
@@ -75,7 +87,7 @@ namespace MontagemCurriculo.Controllers
                 {
                     if (!ExperienciaProfissionalExists(experienciaProfissional.ExperienciaProfissionalID))
                     {
-                        return NotFound();
+                        return RedirectToAction("Error", "Shared");
                     }
                     else
                     {

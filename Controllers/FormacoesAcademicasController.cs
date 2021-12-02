@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,13 +54,18 @@ namespace MontagemCurriculo.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
 
             var formacaoAcademica = await _context.FormacoesAcademicas.FindAsync(id);
-            if (formacaoAcademica == null)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var curriculo = await _context.Curriculos
+                  .Include(c => c.Usuario)
+                  .Where(c => c.UsuarioID == Convert.ToInt32(userId) && c.CurriculoID == formacaoAcademica.CurriculoID)
+                  .FirstOrDefaultAsync();
+            if (formacaoAcademica == null || curriculo == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
             ViewData["TipoCursoID"] = new SelectList(_context.TipoCursos, "TipoCursoID", "Tipo", formacaoAcademica.TipoCursoID);
             return View(formacaoAcademica);
@@ -72,9 +78,15 @@ namespace MontagemCurriculo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("FormacaoAcademicaID,TipoCursoID,Instituicao,AnoInicio,AnoFim,NomeCurso,CurriculoID")] FormacaoAcademica formacaoAcademica)
         {
-            if (id != formacaoAcademica.FormacaoAcademicaID)
+         
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var curriculo = await _context.Curriculos
+                  .Include(c => c.Usuario)
+                  .Where(c => c.UsuarioID == Convert.ToInt32(userId) && c.CurriculoID == formacaoAcademica.CurriculoID)
+                  .FirstOrDefaultAsync();
+            if (id != formacaoAcademica.FormacaoAcademicaID || curriculo == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Shared");
             }
 
             if (ModelState.IsValid)
@@ -88,7 +100,7 @@ namespace MontagemCurriculo.Controllers
                 {
                     if (!FormacaoAcademicaExists(formacaoAcademica.FormacaoAcademicaID))
                     {
-                        return NotFound();
+                        return RedirectToAction("Error", "Shared");
                     }
                     else
                     {

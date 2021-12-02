@@ -37,13 +37,22 @@ namespace MontagemCurriculo.Controllers
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
                 //bloco de dados de informacoes
+                //data da maquina que acessa 
+                DateTime dateTime = DateTime.UtcNow;
+                TimeZoneInfo horaBrasilia = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+                var sdataNavegador = TimeZoneInfo.ConvertTimeFromUtc(dateTime, horaBrasilia);
+                var dataNavegador = sdataNavegador.ToString("dd/MM/yyyy");
+                var shoraNavegador = TimeZoneInfo.ConvertTimeFromUtc(dateTime, horaBrasilia);
+                var horaNavegador = shoraNavegador.ToString("hh:mm");
                 InformacaoLogin informacao = new InformacaoLogin
                 {
                     UsuarioID = usuario.UsuarioID,
                     EnderecoIP = Request.HttpContext.Connection.RemoteIpAddress.ToString(),
-                    Data = DateTime.Now.ToShortDateString(),
-                    Horario = DateTime.Now.ToShortTimeString()
+                    Data = dataNavegador,
+                    Horario = horaNavegador
                 };
+
+
 
                 _context.Add(informacao);
                 await _context.SaveChangesAsync();
@@ -90,12 +99,20 @@ namespace MontagemCurriculo.Controllers
                 {
                     int ID = _context.Usuarios.Where(u => u.Email == login.Email && u.Senha == login.Senha).Select(u => u.UsuarioID).Single();
 
+                    //data da maquina que acessa 
+                    DateTime dateTime = DateTime.UtcNow;
+                    TimeZoneInfo horaBrasilia = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+                    var sdataNavegador = TimeZoneInfo.ConvertTimeFromUtc(dateTime, horaBrasilia);
+                    var dataNavegador = sdataNavegador.ToString("dd/MM/yyyy");
+                    var horaNavegador = TimeZoneInfo.ConvertTimeFromUtc(dateTime, horaBrasilia).ToString("h:mm");
+                    //var horaNavegador = shoraNavegador.ToString("hh:mm tt");
+
                     InformacaoLogin informacao = new InformacaoLogin
                     {
                         UsuarioID = ID,
                         EnderecoIP = Request.HttpContext.Connection.RemoteIpAddress.ToString(),
-                        Data = DateTime.Now.ToShortDateString(),
-                        Horario = DateTime.Now.ToShortTimeString()
+                        Data = dataNavegador,
+                        Horario = horaNavegador
                     };
 
                     _context.Add(informacao);
