@@ -18,9 +18,9 @@
 
 O projeto inclui as seguintes tarefas:
 
-- [x] Cadastro de multiplos usuários
-- [x] Multiplos portfólios por ussuário
-- [x] Escolha de qual portfóli exibir
+- [x] Cadastro de usuários
+- [x] Multiplos portfólios por usuários
+- [x] Escolha de qual portfólio exibir para area pública
 - [x] Exportação de dados para PDF
 
 neste projeto a api ainda retorna os dados apenas de uma condição expecífica, de meu usuario, porém pode ser retornada com mais informaçoes para ser consumida em aplicativos Mobile.
