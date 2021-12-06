@@ -1,8 +1,8 @@
 
 # CurriculoFacil
 
-# Gestão de currículos e publicação da informações de forma livre feito em ASP.NETCORE mvc
-gerar e controlar curriculos
+# Gestão de portfólios e publicação da informações de forma livre feito em ASP.NETCORE mvc
+
 <!---Esses são exemplos. Veja https://shields.io para outras pessoas ou para personalizar este conjunto de escudos. Você pode querer incluir dependências, status do projeto e informações de licença aqui--->
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/caio64x/CurriculoFacil?style=for-the-badge)
