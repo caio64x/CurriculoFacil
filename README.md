@@ -21,6 +21,7 @@ O projeto inclui as seguintes tarefas:
 - [x] Cadastro de multiplos usuários
 - [x] Multiplos portfólios por ussuário
 - [x] Escolha de qual portfóli exibir
+- [x] Exportação de dados para PDF
 
 neste projeto a api ainda retorna os dados apenas de uma condição expecífica, de meu usuario, porém pode ser retornada com mais informaçoes para ser consumida em aplicativos Mobile.
 
@@ -38,14 +39,13 @@ Para hospedar o projeto utilizei de duas plataformas, tanto para aplicação qua
 
 Sem limite de tempo de uso:
 ```
-<https://somee.com/default.aspx>
+https://somee.com/default.aspx
 ```
 60 dias grátis:
 ```
-<https://www.smarterasp.net/index>
+https://www.smarterasp.net/index
 link direto para criar conta
-<https://member5-6.smarterasp.net/account/loginform?go=1&w=1366&cplang=>
+https://member5-6.smarterasp.net/account/loginform?go=1&w=1366&cplang=
 ```
-
 
 [⬆ Voltar ao topo](#CurriculoFacil)<br>
